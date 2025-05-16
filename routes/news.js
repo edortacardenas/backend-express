@@ -3,23 +3,7 @@ import { Router } from 'express';
 
 const newsRouter = Router();
 
-//Middleware to check if the user is authenticated
-//This middleware will check if the user is authenticated and if not it will return a 401 error
-
-const authValid = (req, res, next) => {
-    console.log("Entro al middleware authValid")
-    if (req.isAuthenticated()) { // req.isAuthenticated()método proporcionado por passport verifica si el usuario está autenticado.
-      // Si el usuario está autenticado, continúa con la siguiente función
-      console.log("Esta autenticado")
-      return next();
-    } else {
-      // Si no está autenticado, manda un mensaje 
-      console.log("No esta autenticado")
-      return res.status(401).send({ msg: "Unauthorized User" }); 
-    }
-};
-
-newsRouter.get('/top-headlines', authValid, async (req, res) => {
+newsRouter.get('/top-headlines', async (req, res) => {
     try {
         const { country = 'us', page = 1, pageSize = 10 } = req.query; // Obtener parámetros del query
         const apiKey = process.env.NEWS_API_KEY;
