@@ -251,7 +251,7 @@ router.post("/reset-password", async (req, res) => {
       // Crear el enlace de restablecimiento de contraseña
       // This link should point to your frontend application's reset password page
       // Assuming your frontend is on http://localhost:5173 and has a route like /reset-password/:token
-      const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
+      const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
   
       // Configurar el correo electrónico
       const mailOptions = {
@@ -643,8 +643,8 @@ router.get('/auth/github', passport.authenticate('github'));
   
 router.get("/auth/callback/github", 
 passport.authenticate('github', { 
-    failureRedirect: "http://localhost:5173/login", //Redirect to the login page if the authentication fails
-    successRedirect: "http://localhost:5173/dashboard"  }), //Redirect to the frontend
+    failureRedirect: `${process.env.FRONTEND_URL}/login`, //Redirect to the login page if the authentication fails
+    successRedirect: `${process.env.FRONTEND_URL}/dashboard`  }), //Redirect to the frontend
 function(req, res) {
     // Successful authentication, redirect home.
     console.log(req.session)
@@ -660,8 +660,8 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 
 
 router.get("/auth/callback/google", 
     passport.authenticate('google', {
-        failureRedirect: "http://localhost:5173/login", //Redirect to the login page if the authentication fails
-        successRedirect: "http://localhost:5173/dashboard"  }),
+        failureRedirect: `${process.env.FRONTEND_URL}/login`, //Redirect to the login page if the authentication fails
+        successRedirect: `${process.env.FRONTEND_URL}/dashboard`  }),
     (req, res) => {
         res.status(200).send("User loggined in with google");
 });

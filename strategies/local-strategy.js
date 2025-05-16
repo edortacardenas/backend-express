@@ -164,25 +164,7 @@ export default passport.use(
                 // Si la contraseña es correcta e email no verificado retorna mensaje
                 if (isMatch && findUserByEmail.isVerified === false) {
                     console.log("Por favor verifica el email")
-                    /*const otp = generateOTP(); // Generar un OTP
-                    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // Expira en 10 minutos
-                    await transporter.sendMail(
-                        {
-                        from: process.env.USER_MAIL,
-                        to: findUserByEmail.email,
-                        subject: 'OTP Verification',
-                        text: `Your OTP is: ${otp}`,
-                        },
-                        (error, info) => {
-                        if (error) {
-                            console.error('Error al enviar el correo:', error);
-                        } else {
-                            console.log('Correo enviado:', info.response);
-                        }
-                    });
-                    findUserByEmail.otp = otp;
-                    findUserByEmail.otpExpiry = otpExpiry;*/
-                    //existingUser.isVerified = false; // Asegúrate de que el usuario no esté verificado
+                    
                     await findUserByEmail.save();
                     return done(null, false, { msg: "Por favor verifica el email " });
                 }
