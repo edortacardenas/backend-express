@@ -1,18 +1,20 @@
 import { Sequelize } from 'sequelize';
 
+const dbConnectionString = process.env.DATABASE_URL;
+
+console.log('Intentando conectar con DATABASE_URL:', dbConnectionString);
+
+if (!dbConnectionString) {
+    console.error('Error: La variable de entorno DATABASE_URL no está configurada.');
+    // Considera salir o manejar el error de forma más robusta si es crítico
+    process.exit(1);
+  }
+  
 // Configura Sequelize con PostgreSQL
 const sequelize = new Sequelize(process.env.DATABASE_URL , {
     dialect: 'postgres',
     logging: false, // Desactiva el logging de consultas SQL
-    dialectOptions: {
-        ssl: {
-            require: true,
-            // rejectUnauthorized: true // Por defecto es true.
-            // Clever Cloud debería usar certificados válidos,
-            // por lo que no deberías necesitar ponerlo en false.
-            // Cambiar a false solo si es estrictamente necesario y entiendes los riesgos de seguridad.
-        }
-    }
+    
 });
 
 // Sincroniza los modelos con la base de datos
