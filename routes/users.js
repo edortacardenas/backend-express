@@ -858,7 +858,6 @@ router.delete('/users/:id', authValid, async (req, res) => {
 })
 
 //Get request to get all users in the database
-//Query Parameters example localhost:3000/api/products?filter=username&value=asd
 //Filtered by username or displayName
 
 router.get('/users', authValid, checkSchema(queryValidationUserShema), async (req, res) => {
