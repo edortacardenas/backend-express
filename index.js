@@ -5,7 +5,7 @@ import { join, dirname } from 'path'; //Import dirname
 import { fileURLToPath } from 'url'; //Import fileURLToPath
 
 import routes from "./routes/indexroutes.js"//Importin the routes
-import cookieParser from 'cookie-parser';
+//import cookieParser from 'cookie-parser';
 import session from 'express-session'; 
 import passport from 'passport';
 import dotenv from 'dotenv'; //Import dotenv to use environment variables
@@ -29,7 +29,7 @@ const app = express();
 
 //Configure cors to allow requests from localhost:3000
 app.use(cors({
-    origin: process.env.FRONTEND_URL|| "http://localhost:5173", //Allow requests from this origin
+    origin: process.env.FRONTEND_URL || "http://localhost:5173", //Allow requests from this origin
     credentials: true, //Allow credentials
 }));
 
