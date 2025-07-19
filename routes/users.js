@@ -412,7 +412,7 @@ router.post("/auth/request-email-verification", async (req, res) => { // Removed
         user.emailVerificationExpiry = expiryDate;
         await user.save();
 
-        const verificationLink = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify-email?token=${token}`;
+        const verificationLink = `${process.env.FRONTEND_URL }/verify-email?token=${token}`;
 
         // Asumiendo que tienes una función sendVerificationEmail en utils/mail.js o similar
         // que toma (toEmail, subject, htmlContentOrText)
