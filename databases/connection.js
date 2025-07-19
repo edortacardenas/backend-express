@@ -1,8 +1,10 @@
 import { Sequelize } from 'sequelize';
+import pg from 'pg';
 
 const dbConnectionString = process.env.DATABASE_URL;
 
 console.log('Intentando conectar con DATABASE_URL:', dbConnectionString);
+console.log(pg.Connection)
 
 if (!dbConnectionString) {
     console.error('Error: La variable de entorno DATABASE_URL no está configurada.');
