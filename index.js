@@ -59,6 +59,9 @@ app.use(
         saveUninitialized: false,
         resave: false,
         cookie: {
+            secure: true, //  Use 'true' in production (HTTPS only)
+            httpOnly: true,
+            sameSite: 'None', // Or 'Lax' depending on your setup
             maxAge: 24 * 60 * 60 * 1000, // 1 día
         },
         store: sequelizeStore, // Usa SequelizeStore como almacenamiento

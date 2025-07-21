@@ -31,7 +31,8 @@ passport.use(
     callbackURL: process.env.GOOGLE_CALLBACK_URL
   },
   async (accessToken, refreshToken, profile, done) => {
-    console.log("Dentro de google strategy")
+    console.log("Google Strategy - Client ID:", process.env.GOOGLE_CLIENT_ID);  // Log the value
+    console.log("Google Strategy - Callback URL:", process.env.GOOGLE_CALLBACK_URL); // Log the value
     let findUserEmail;
     let findUserGoogle;
     try {
