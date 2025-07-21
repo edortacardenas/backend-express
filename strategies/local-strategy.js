@@ -2,10 +2,13 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as GitHubStrategy } from 'passport-github';
+import dotenv from 'dotenv'; //Import dotenv to use environment variables
 
 import  User  from '../databases/shemas/user.js'; //Import User model
 import bcrypt from 'bcryptjs';
-import { generateOTP, transporter } from '../utils/mail.js';
+
+//Fetchin environment variables
+dotenv.config(); //Load environment variables from .env file
 
 passport.serializeUser((user, done) => {
     console.log("Dentro de serialize user")
@@ -89,7 +92,8 @@ passport.use(
     callbackURL: process.env.GITHUB_CALLBACK_URL
   },
   async (accessToken, refreshToken, profile, done) => {
-    console.log("Dentro de github strategy")
+    console.log("Google Strategy - Client ID:", process.env.GITHUB_CLIENT_ID);  // Log the value
+    console.log("Google Strategy - Callback URL:", process.env.GITHUB_CALLBACK_URL); // Log the value
     let findUserEmail;
     let findUserGithub;
     try {
