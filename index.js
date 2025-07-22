@@ -59,6 +59,8 @@ app.use(
         saveUninitialized: false,
         resave: false,
         cookie: {
+            domain: process.env.FRONTEND_URL, // Set the domain to the frontend URL
+            secure: true, // Set to true if using HTTPS
             maxAge: 24 * 60 * 60 * 1000, // 1 día
         },
         store: sequelizeStore, // Usa SequelizeStore como almacenamiento
