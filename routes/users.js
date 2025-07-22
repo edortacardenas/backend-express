@@ -644,7 +644,7 @@ router.get('/auth/github', passport.authenticate('github'));
 router.get("/auth/callback/github", 
 passport.authenticate('github', { 
     failureRedirect: `${process.env.FRONTEND_URL}/login`, //Redirect to the login page if the authentication fails
-    successRedirect: `${process.env.FRONTEND_URL}/`  }), //Redirect to the frontend
+    successRedirect: `${process.env.FRONTEND_URL}/dashboard`  }), //Redirect to the frontend
 function(req, res) {
     // Successful authentication, redirect home.
     console.log(req.session)
