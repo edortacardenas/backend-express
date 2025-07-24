@@ -56,8 +56,8 @@ app.use(express.json()); //look requests where the Content-Type header matches t
 app.use(
     session({
         secret: process.env.SESSION_SECRET || "erick the dev",
-        saveUninitialized: false,
         resave: false,
+        saveUninitialized: false,
         cookie: {
             maxAge: 24 * 60 * 60 * 1000, // 1 día
         },
