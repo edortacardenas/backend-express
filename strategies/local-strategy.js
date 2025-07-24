@@ -92,8 +92,8 @@ passport.use(
     callbackURL: process.env.GITHUB_CALLBACK_URL
   },
   async (accessToken, refreshToken, profile, done) => {
-    console.log("Google Strategy - Client ID:", process.env.GITHUB_CLIENT_ID);  // Log the value
-    console.log("Google Strategy - Callback URL:", process.env.GITHUB_CALLBACK_URL); // Log the value
+    console.log("GitHub Strategy - Client ID:", process.env.GITHUB_CLIENT_ID);  // Log the value
+    console.log("GitHub Strategy - Callback URL:", process.env.GITHUB_CALLBACK_URL); // Log the value
     let findUserEmail;
     let findUserGithub;
     try {
