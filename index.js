@@ -59,7 +59,6 @@ app.use(
         resave: false,
         saveUninitialized: false,
         cookie: {
-            secure: true,
             maxAge: 24 * 60 * 60 * 1000, // 1 día
         },
         store: sequelizeStore, // Usa SequelizeStore como almacenamiento
