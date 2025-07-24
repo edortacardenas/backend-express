@@ -362,7 +362,11 @@ router.post(
 
 //Endpoint to chek if the user is authenticated
 router.get("/login/status", authValid, (req, res) => {
-    return req.user ? res.send({isAuthenticated: true, user: req.user}) : res.status(401).send({isAuthenticated: false, msg: "User not authenticated"})
+    if (req.session && req.session.passport && req.session.passport.user) {
+        // El usuario está autenticado
+        return res.send({ isAuthenticated: true, user: req.user });
+    }
+    return res.status(401).send({ isAuthenticated: false, msg: "User not authenticated" });
 })
 
 //Endpoint to logout the user
