@@ -79,9 +79,30 @@ app.use(routes) //Defining the routes that came from the routes file
 
 
 //Run Server
-app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
-});
+const startServer = async () => {
+    try {
+        // Conéctate a la base de datos
+        await sequelize.authenticate();
+        console.log('Conexión a PostgreSQL exitosa');
+
+        // Sincroniza TODOS los modelos con la base de datos.
+        // Esto creará las tablas si no existen.
+        // ¡IMPORTANTE! En un entorno de producción real con datos, usarías migraciones.
+        // Esto es para la configuración inicial.
+        await sequelize.sync(); 
+        console.log("Todos los modelos se han sincronizado correctamente.");
+
+        // Run Server
+        app.listen(port, () => {
+            console.log(`Legacy server listening on port ${port}`);
+        });
+
+    } catch (error) {
+        console.error('No se pudo conectar a la base de datos:', error);
+    }
+};
+
+startServer();
 
 //Routes
 app.get("/", (req, res)=>{
