@@ -28,32 +28,9 @@ dotenv.config(); //Load environment variables from .env file
 const app = express(); 
 
 //Configure cors to allow requests from localhost:3000
-const allowedOrigins = [
-    process.env.FRONTEND_URL, // Ej: http://localhost:5173
-    `http://<TU_IP_LOCAL>:${process.env.FRONTEND_PORT || 5173}` // Reemplaza con tu IP y puerto
-];
-
-// Para desarrollo, podrías querer agregar la IP de tu máquina dinámicamente
-if (process.env.NODE_ENV !== 'production') {
-    // Aquí puedes añadir la IP de tu red local para que tu móvil pueda conectarse
-    // Por ejemplo: 'http://192.168.1.5:5173'
-    // Puedes encontrar tu IP con 'ipconfig' (Windows) o 'ifconfig' (Mac/Linux)
-    const localIpUrl = 'http://192.168.121.9:5173'; // ¡CAMBIA ESTO POR TU IP REAL!
-    allowedOrigins.push(localIpUrl);
-}
-
-
 app.use(cors({
-    origin: function (origin, callback) {
-        // Permitir solicitudes sin origen (como Postman o apps móviles)
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) {
-            const msg = 'La política de CORS para este sitio no permite acceso desde el origen especificado.';
-            return callback(new Error(msg), false);
-        }
-        return callback(null, true);
-    },
-    credentials: true,
+    origin: process.env.FRONTEND_URL , //Allow requests from this origin
+    credentials: true, //Allow credentials
 }));
 // Configura el almacenamiento de sesiones con Sequelize
 const SessionStore = SequelizeStore(session.Store);
@@ -81,22 +58,13 @@ app.use(
         secret: process.env.SESSION_SECRET || "erick the dev",
         resave: false,
         saveUninitialized: false,
-        store: sequelizeStore,
+        store: sequelizeStore, // Usa SequelizeStore como almacenamiento
         cookie: {
             maxAge: 24 * 60 * 60 * 1000, // 1 día
-            // EN PRODUCCIÓN, ESTO DEBE SER 'true' Y USAR HTTPS
-            secure: process.env.NODE_ENV === 'production',
-            
-            // ESTO ES CLAVE PARA ENTORNOS NO-HTTPS Y CROSS-SITE
-            // PERO CUIDADO EN PRODUCCIÓN
-            sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax'
-        },
+        }
+        
     })
 );
-
-if (process.env.NODE_ENV === 'production') {
-    app.set('trust proxy', 1); 
-}
 
 //app.set("views", join(__dirname, "views")); //Set views directory
 //app.set("view engine", "ejs"); //Set view engine to ejs
