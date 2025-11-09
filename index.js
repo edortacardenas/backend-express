@@ -27,6 +27,9 @@ dotenv.config(); //Load environment variables from .env file
 //Initialization express
 const app = express(); 
 
+// >>> 1. Confiar en el Proxy Inverso (Trust Proxy)
+app.set('trust proxy', 1);
+
 //Configure cors to allow requests from localhost:3000
 app.use(cors({
     origin: process.env.FRONTEND_URL , //Allow requests from this origin
@@ -55,14 +58,17 @@ app.use(express.json()); //look requests where the Content-Type header matches t
 
 app.use(
     session({
-        secret: process.env.SESSION_SECRET || "erick the dev",
+        // Es muy importante que uses una variable de entorno segura y no un valor por defecto.
+        secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
-        store: sequelizeStore, // Usa SequelizeStore como almacenamiento
+        store: sequelizeStore, // Usa SequelizeStore como almacenamiento de sesión
         cookie: {
-            maxAge: 24 * 60 * 60 * 1000, // 1 día
+            secure: process.env.NODE_ENV === 'production', // true en producción (solo HTTPS), false en desarrollo
+            httpOnly: true, // Previene el acceso a la cookie desde JavaScript en el cliente
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' es OBLIGATORIO para cookies cross-site en producción
+            maxAge: 24 * 60 * 60 * 1000, // La cookie expira en 1 día
         }
-        
     })
 );
 
