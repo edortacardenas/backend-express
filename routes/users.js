@@ -414,7 +414,9 @@ router.post("/auth/request-email-verification", async (req, res) => { // Removed
 
         user.emailVerificationToken = token;
         user.emailVerificationExpiry = expiryDate;
+        console.log(`[Request Verification] Preparando para guardar token: ${token} para el usuario: ${user.email}`); 
         await user.save();
+        console.log(`[Request Verification] Token guardado exitosamente.`);
 
         const verificationLink = `${process.env.FRONTEND_URL }/verify-email?token=${token}`;
 
@@ -452,6 +454,8 @@ router.post("/auth/complete-email-verification", async (req, res) => { // Remove
     console.log("Entro a complete-email-verification");
     const { token } = req.body;
     // User is identified by the token, not by an active session's req.user.id
+    console.log(`[Complete Verification] Recibido token: ${token}`); // LOG 3
+    console.log(`[Complete Verification] Buscando usuario con este token. Hora actual del servidor: ${new Date()}`);
 
     if (!token) {
         return res.status(400).send({ msg: "Token de verificación no proporcionado." });
@@ -468,6 +472,7 @@ router.post("/auth/complete-email-verification", async (req, res) => { // Remove
 
         if (!user) {
             // If no user found with this token, or if it's expired
+            console.error('[Complete Verification] ERROR: No se encontró ningún usuario válido con ese token.'); 
             return res.status(400).send({ msg: "Token de verificación inválido o expirado." });
         }
 
