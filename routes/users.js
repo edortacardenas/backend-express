@@ -414,9 +414,7 @@ router.post("/auth/request-email-verification", async (req, res) => { // Removed
 
         user.emailVerificationToken = token;
         user.emailVerificationExpiry = expiryDate;
-        console.log(`[DEBUG] Preparando para guardar token para ${user.email}. Token: ${token}, Expiración: ${expiryDate}`);
         await user.save();
-        console.log(`[DEBUG] Usuario guardado. Token en el objeto guardado: ${savedUser.emailVerificationToken}`);
 
         const verificationLink = `${process.env.FRONTEND_URL }/verify-email?token=${token}`;
 
@@ -454,8 +452,6 @@ router.post("/auth/complete-email-verification", async (req, res) => { // Remove
     console.log("Entro a complete-email-verification");
     const { token } = req.body;
     // User is identified by the token, not by an active session's req.user.id
-    console.log(`[DEBUG] Recibido token del frontend para verificar: ${token}`);
-    console.log(`[DEBUG] Hora actual del servidor (UTC): ${new Date().toISOString()}`);
 
     if (!token) {
         return res.status(400).send({ msg: "Token de verificación no proporcionado." });
@@ -471,15 +467,9 @@ router.post("/auth/complete-email-verification", async (req, res) => { // Remove
         });
 
         if (!user) {
-            // Log para ver por qué falló la búsqueda
-            const expiredUser = await User.findOne({ where: { emailVerificationToken: token } });
-            if (expiredUser) {
-                console.error(`[DEBUG] ERROR: Token encontrado, pero ha expirado. Expiración guardada: ${expiredUser.emailVerificationExpiry.toISOString()}`);
-            } else {
-                console.error('[DEBUG] ERROR: No se encontró ningún usuario con este token en la base de datos.');
-            }
+            // If no user found with this token, or if it's expired
             return res.status(400).send({ msg: "Token de verificación inválido o expirado." });
-    }
+        }
 
         // Token is valid
         user.emailVerificationToken = null; // Clear the token
